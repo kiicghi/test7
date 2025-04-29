@@ -4,30 +4,36 @@
   <meta charset="UTF-8">
   <title>TODO</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Google Fonts: スタイリッシュなフォント -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
   <style>
-    /* ベーススタイル */
     body {
-      font-family: 'Helvetica Neue', 'Segoe UI', 'Roboto', 'Noto Sans JP', sans-serif;
+      font-family: 'Poppins', 'Segoe UI', 'Helvetica Neue', sans-serif;
       margin: 20px;
       padding: 0;
       line-height: 1.6;
     }
 
     h1 {
-      font-size: 24px;
-      margin-bottom: 16px;
+      font-size: 28px;
+      margin-bottom: 20px;
     }
 
-    /* 入力フィールド */
+    .input-area {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
     #taskInput {
-      width: 100%;
-      max-width: 300px;
+      flex: 1;
+      min-width: 200px;
       padding: 10px;
       font-size: 16px;
       box-sizing: border-box;
     }
 
-    /* 追加ボタン */
     .add-btn {
       padding: 10px 16px;
       font-size: 16px;
@@ -37,24 +43,22 @@
       border-radius: 6px;
       cursor: pointer;
       transition: background-color 0.2s;
+      white-space: nowrap;
     }
 
     .add-btn:hover {
       background-color: #45a049;
     }
 
-    /* タスクリスト全体 */
     #taskList {
-      margin-top: 30px;
+      margin-top: 10px;
     }
 
-    /* タスク */
     .task {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      padding: 6px 0;
-      margin-bottom: 10px; /* ← 前回より狭く */
+      align-items: center;
+      margin-bottom: 6px;
     }
 
     .task-left {
@@ -64,7 +68,7 @@
     }
 
     .task input[type="checkbox"] {
-      margin-right: 12px;
+      margin-right: 10px;
       width: 20px;
       height: 20px;
     }
@@ -79,9 +83,8 @@
       color: gray;
     }
 
-    /* 削除ボタン */
     .delete-btn {
-      margin-left: 16px;
+      margin-left: 12px;
       padding: 6px 12px;
       font-size: 14px;
       border: none;
@@ -90,13 +93,13 @@
       border-radius: 4px;
       cursor: pointer;
       transition: background-color 0.2s;
+      flex-shrink: 0;
     }
 
     .delete-btn:hover {
       background-color: #bbb;
     }
 
-    /* タイマー */
     .timer {
       font-size: 32px;
       margin-top: 30px;
@@ -124,21 +127,30 @@
       background-color: #1976D2;
     }
 
-    /* レスポンシブ対応 */
     @media screen and (max-width: 600px) {
+      .input-area {
+        flex-direction: row;
+        flex-wrap: nowrap;
+      }
+
+      .add-btn {
+        flex-shrink: 0;
+      }
+
       .task {
-        flex-direction: column;
-        align-items: flex-start;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 4px;
       }
 
       .task-left {
-        margin-bottom: 8px;
+        margin-bottom: 0;
+        flex-grow: 1;
       }
 
       .delete-btn {
-        align-self: flex-end;
-        padding: 6px 10px;
         font-size: 13px;
+        padding: 5px 10px;
       }
 
       .timer-buttons {
@@ -149,10 +161,6 @@
       .timer-buttons button {
         width: 100%;
       }
-
-      #taskInput {
-        max-width: 100%;
-      }
     }
   </style>
 </head>
@@ -160,14 +168,16 @@
 
   <h1>TODO</h1>
 
-  <!-- タスク入力 -->
-  <input type="text" id="taskInput" placeholder="タスクを入力">
-  <button class="add-btn" onclick="addTask()">追加</button>
+  <!-- 入力フィールドと追加ボタン -->
+  <div class="input-area">
+    <input type="text" id="taskInput" placeholder="タスクを入力">
+    <button class="add-btn" onclick="addTask()">追加</button>
+  </div>
 
   <!-- タスク一覧 -->
   <div id="taskList"></div>
 
-  <!-- タイマー -->
+  <!-- タイマー表示 -->
   <div class="timer" id="timerDisplay">00:00</div>
   <div class="timer-buttons">
     <button onclick="startTimer(1500)">25分スタート</button>
@@ -251,25 +261,27 @@
       document.getElementById('timerDisplay').textContent = formatTime(seconds);
     }
 
-    function startTimer(sec) {
+    function startTimer(s) {
       stopTimer();
-      seconds = sec;
+      seconds = s;
       updateTimerDisplay();
       timer = setInterval(() => {
-        seconds--;
-        updateTimerDisplay();
-        if (seconds <= 0) stopTimer();
+        if (seconds > 0) {
+          seconds--;
+          updateTimerDisplay();
+        } else {
+          stopTimer();
+          alert("タイマー終了！");
+        }
       }, 1000);
     }
 
     function stopTimer() {
-      clearInterval(timer);
+      if (timer) clearInterval(timer);
       timer = null;
     }
 
-    // 初期表示
     renderTasks();
   </script>
-
 </body>
 </html>
