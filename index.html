@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>TODO管理とタイマー</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    h1 {
+      margin-bottom: 16px;
+    }
+
+    .task {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 16px; /* タスクの文字サイズ */
+    }
+
+    .task input[type="checkbox"] {
+      margin-right: 10px;
+    }
+
+    .done {
+      text-decoration: line-through;
+      color: gray;
+    }
+
+    .timer {
+      font-size: 32px;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+
+    input[type="text"] {
+      width: 300px;
+      padding: 8px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
+      padding: 8px 14px;
+      font-size: 14px;
+      border: none;
+      border-radius: 6px;
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .task button {
+      margin-left: auto;
+      background-color: #dc3545;
+    }
+
+    .task button:hover {
+      background-color: #a71d2a;
+    }
+
+    hr {
+      margin: 24px 0;
+    }
+  </style>
+</head>
+<body>
+
+<h1>TODO管理</h1>
+
+<!-- タスク入力フォーム -->
+<input type="text" id="taskInput" placeholder="タスクを入力">
+<button onclick="addTask()">追加</button>
+
+<!-- タスクリスト -->
+<div id="taskList"></div>
+
+<hr>
+
+<!-- タイマー表示 -->
+<div class="timer" id="timerDisplay">00:00</div>
+<button onclick="startTimer(1500)">25分スタート</button>
+<button onclick="startTimer(300)">5分休憩</button>
+<button onclick="stopTimer()">ストップ</button>
+
+<script>
+  let tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+  let timer = null;
+  let seconds = 0;
+
+  function saveTasks() {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }
+
+  function renderTasks() {
+    const taskList = document.getElementById('taskList');
+    taskList.innerHTML = '';
+    tasks.forEach((task, index) => {
+      const div = document.createElement('div');
+      div.className = 'task';
+
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.checked = task.isDone;
+      checkbox.onchange = () => toggleTask(index);
+
+      const span = document.createElement('span');
+      span.textContent = task.title;
+      if (task.isDone) span.classList.add('done');
+
+      const deleteBtn = document.createElement('button');
+      deleteBtn.textContent = '削除';
+      deleteBtn.onclick = () => deleteTask(index);
+
+      div.appendChild(checkbox);
+      div.appendChild(span);
+      div.appendChild(deleteBtn);
+      taskList.appendChild(div);
+    });
+  }
+
+  function addTask() {
+    const input = document.getElementById('taskInput');
+    const title = input.value.trim();
+    if (title) {
+      tasks.push({ title, isDone: false });
+      input.value = '';
+      saveTasks();
+      renderTasks();
+    }
+  }
+
+  function toggleTask(index) {
+    tasks[index].isDone = !tasks[index].isDone;
+    saveTasks();
+    renderTasks();
+  }
+
+  function deleteTask(index) {
+    tasks.splice(index, 1);
+    saveTasks();
+    renderTasks();
+  }
+
+  function formatTime(s) {
+    const m = String(Math.floor(s / 60)).padStart(2, '0');
+    const sec = String(s % 60).padStart(2, '0');
+    return `${m}:${sec}`;
+  }
+
+  function updateTimerDisplay() {
+    document.getElementById('timerDisplay').textContent = formatTime(seconds);
+  }
+
+  function startTimer(sec) {
+    clearInterval(timer);
+    seconds = sec;
+    updateTimerDisplay();
+    timer = setInterval(() => {
+      if (seconds > 0) {
+        seconds--;
+        updateTimerDisplay();
+      } else {
+        clearInterval(timer);
+        alert('タイマーが終了しました！');
+      }
+    }, 1000);
+  }
+
+  function stopTimer() {
+    clearInterval(timer);
+  }
+
+  document.getElementById('taskInput').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+      addTask();
+    }
+  });
+
+  renderTasks();
+</script>
+
+</body>
+</html>
