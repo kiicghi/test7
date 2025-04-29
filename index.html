@@ -140,12 +140,16 @@
       .task {
         flex-direction: row;
         align-items: center;
-        margin-bottom: 4px;
+        margin-bottom: 10px; /* スマホ用：少し余白を増やす */
       }
 
       .task-left {
         margin-bottom: 0;
         flex-grow: 1;
+      }
+
+      .task span {
+        font-size: 18px; /* スマホ用：フォントを大きく */
       }
 
       .delete-btn {
@@ -233,9 +237,9 @@
       const title = input.value.trim();
       if (title) {
         tasks.push({ title, isDone: false });
-        input.value = '';
         saveTasks();
         renderTasks();
+        input.value = '';
       }
     }
 
@@ -251,34 +255,29 @@
       renderTasks();
     }
 
-    function formatTime(s) {
-      const m = String(Math.floor(s / 60)).padStart(2, '0');
-      const sec = String(s % 60).padStart(2, '0');
-      return `${m}:${sec}`;
-    }
-
-    function updateTimerDisplay() {
-      document.getElementById('timerDisplay').textContent = formatTime(seconds);
-    }
-
-    function startTimer(s) {
-      stopTimer();
-      seconds = s;
+    function startTimer(duration) {
+      clearInterval(timer);
+      seconds = duration;
       updateTimerDisplay();
       timer = setInterval(() => {
         if (seconds > 0) {
           seconds--;
           updateTimerDisplay();
         } else {
-          stopTimer();
-          alert("タイマー終了！");
+          clearInterval(timer);
+          alert("タイマーが終了しました！");
         }
       }, 1000);
     }
 
     function stopTimer() {
-      if (timer) clearInterval(timer);
-      timer = null;
+      clearInterval(timer);
+    }
+
+    function updateTimerDisplay() {
+      const minutes = String(Math.floor(seconds / 60)).padStart(2, '0');
+      const secs = String(seconds % 60).padStart(2, '0');
+      document.getElementById('timerDisplay').textContent = `${minutes}:${secs}`;
     }
 
     renderTasks();
