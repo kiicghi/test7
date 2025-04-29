@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>TODO管理とタイマー</title>
+  <title>TODO</title>
   <style>
     body {
       font-family: 'Helvetica Neue', sans-serif;
@@ -14,6 +14,10 @@
     h1 {
       font-size: 28px;
       margin-bottom: 20px;
+    }
+
+    #inputArea {
+      margin-bottom: 30px;
     }
 
     #taskInput {
@@ -66,6 +70,7 @@
       color: #333;
       font-size: 12px;
       padding: 6px 10px;
+      border-radius: 8px;
     }
 
     .delete-button:hover {
@@ -86,10 +91,12 @@
 </head>
 <body>
 
-<h1>TODO管理</h1>
+<h1>TODO</h1>
 
-<input type="text" id="taskInput" placeholder="タスクを入力">
-<button onclick="addTask()">追加</button>
+<div id="inputArea">
+  <input type="text" id="taskInput" placeholder="タスクを入力">
+  <button onclick="addTask()">追加</button>
+</div>
 
 <div id="taskList"></div>
 
