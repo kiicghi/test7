@@ -5,74 +5,82 @@
   <title>TODO管理とタイマー</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
+      font-family: 'Helvetica Neue', sans-serif;
+      background: #f9f9f9;
+      margin: 40px;
+      color: #333;
     }
 
     h1 {
-      margin-bottom: 16px;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    #taskInput {
+      width: 300px;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-right: 10px;
+    }
+
+    button {
+      background-color: #4a90e2;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #357ab8;
     }
 
     .task {
       display: flex;
       align-items: center;
       margin-bottom: 10px;
-      font-size: 16px; /* タスクの文字サイズ */
+      font-size: 16px;
     }
 
     .task input[type="checkbox"] {
       margin-right: 10px;
+      transform: scale(1.2);
+    }
+
+    .task span {
+      flex-grow: 1;
     }
 
     .done {
       text-decoration: line-through;
-      color: gray;
+      color: #aaa;
+    }
+
+    .delete-button {
+      background-color: #ccc;
+      color: #333;
+      font-size: 12px;
+      padding: 6px 10px;
+    }
+
+    .delete-button:hover {
+      background-color: #aaa;
     }
 
     .timer {
       font-size: 32px;
-      margin-top: 20px;
+      margin-top: 30px;
       margin-bottom: 10px;
-    }
-
-    input[type="text"] {
-      width: 300px;
-      padding: 8px;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-
-    button {
-      padding: 8px 14px;
-      font-size: 14px;
-      border: none;
-      border-radius: 6px;
-      background-color: #007BFF;
-      color: white;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-
-    button:active {
-      transform: scale(0.98);
-    }
-
-    .task button {
-      margin-left: auto;
-      background-color: #dc3545;
-    }
-
-    .task button:hover {
-      background-color: #a71d2a;
+      font-weight: bold;
     }
 
     hr {
-      margin: 24px 0;
+      margin: 30px 0;
     }
   </style>
 </head>
@@ -80,16 +88,13 @@
 
 <h1>TODO管理</h1>
 
-<!-- タスク入力フォーム -->
 <input type="text" id="taskInput" placeholder="タスクを入力">
 <button onclick="addTask()">追加</button>
 
-<!-- タスクリスト -->
 <div id="taskList"></div>
 
 <hr>
 
-<!-- タイマー表示 -->
 <div class="timer" id="timerDisplay">00:00</div>
 <button onclick="startTimer(1500)">25分スタート</button>
 <button onclick="startTimer(300)">5分休憩</button>
@@ -122,6 +127,7 @@
 
       const deleteBtn = document.createElement('button');
       deleteBtn.textContent = '削除';
+      deleteBtn.className = 'delete-button';
       deleteBtn.onclick = () => deleteTask(index);
 
       div.appendChild(checkbox);
