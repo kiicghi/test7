@@ -2,277 +2,283 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TODO</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
+    /* ベーススタイル */
     body {
-      font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
-      background: #f9f9f9;
-      margin: 40px;
-      color: #333;
-      font-size: 16px;
+      font-family: 'Helvetica Neue', 'Segoe UI', 'Roboto', 'Noto Sans JP', sans-serif;
+      margin: 20px;
+      padding: 0;
+      line-height: 1.6;
     }
 
     h1 {
-      font-size: 28px;
-      margin-bottom: 20px;
+      font-size: 24px;
+      margin-bottom: 16px;
     }
 
-    #inputArea {
-      margin-bottom: 40px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
+    /* 入力フィールド */
     #taskInput {
-      flex: 1;
-      min-width: 200px;
+      width: 100%;
+      max-width: 300px;
       padding: 10px;
       font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
+      box-sizing: border-box;
     }
 
-    button {
-      background-color: #4a90e2;
-      color: white;
-      border: none;
-      border-radius: 8px;
+    /* 追加ボタン */
+    .add-btn {
       padding: 10px 16px;
       font-size: 16px;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      border-radius: 6px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      transition: background-color 0.2s;
     }
 
-    button:hover {
-      background-color: #357ab8;
+    .add-btn:hover {
+      background-color: #45a049;
     }
 
+    /* タスクリスト全体 */
+    #taskList {
+      margin-top: 30px;
+    }
+
+    /* タスク */
     .task {
       display: flex;
       align-items: center;
-      margin-bottom: 12px;
-      font-size: 16px;
-      border-bottom: 1px solid #ddd;
-      padding-bottom: 8px;
+      justify-content: space-between;
+      padding: 8px 0;
+      margin-bottom: 16px;
+    }
+
+    .task-left {
+      display: flex;
+      align-items: center;
+      flex-grow: 1;
     }
 
     .task input[type="checkbox"] {
-      margin-right: 10px;
-      transform: scale(1.5);
-      accent-color: #4a90e2;
+      margin-right: 12px;
+      width: 20px;
+      height: 20px;
     }
 
     .task span {
-      flex-grow: 1;
+      font-size: 16px;
+      word-break: break-word;
     }
 
     .done {
       text-decoration: line-through;
-      color: #aaa;
+      color: gray;
     }
 
-    .delete-button {
+    /* 削除ボタン */
+    .delete-btn {
+      margin-left: 16px;
+      padding: 6px 12px;
+      font-size: 14px;
+      border: none;
       background-color: #ccc;
       color: #333;
-      font-size: 13px;
-      padding: 6px 10px;
-      border-radius: 6px;
-      margin-left: auto;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s;
     }
 
-    .delete-button:hover {
-      background-color: #aaa;
+    .delete-btn:hover {
+      background-color: #bbb;
     }
 
+    /* タイマー */
     .timer {
       font-size: 32px;
       margin-top: 30px;
-      margin-bottom: 20px;
-      font-weight: bold;
     }
 
     .timer-buttons {
+      margin-top: 10px;
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
     }
 
-    hr {
-      margin: 40px 0 30px;
+    .timer-buttons button {
+      padding: 10px 16px;
+      font-size: 16px;
+      border: none;
+      background-color: #2196F3;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s;
     }
 
-    /* スマホ対応 */
-    @media (max-width: 600px) {
-      body {
-        margin: 20px;
-        font-size: 18px;
-      }
+    .timer-buttons button:hover {
+      background-color: #1976D2;
+    }
 
-      h1 {
-        font-size: 24px;
-      }
-
-      #inputArea {
-        flex-direction: column;
-      }
-
-      #taskInput {
-        width: 100%;
-        font-size: 18px;
-      }
-
-      button {
-        width: 100%;
-        font-size: 18px;
-      }
-
-      .delete-button {
-        font-size: 14px;
-        padding: 5px 8px;
-        width: auto;
-      }
-
+    /* レスポンシブ対応 */
+    @media screen and (max-width: 600px) {
       .task {
-        font-size: 18px;
+        flex-direction: column;
+        align-items: flex-start;
       }
 
-      .task input[type="checkbox"] {
-        transform: scale(1.5);
+      .task-left {
+        margin-bottom: 8px;
       }
 
-      .timer {
-        font-size: 28px;
+      .delete-btn {
+        align-self: flex-end;
+        padding: 6px 10px;
+        font-size: 13px;
       }
 
       .timer-buttons {
         flex-direction: column;
+        align-items: stretch;
       }
 
       .timer-buttons button {
         width: 100%;
+      }
+
+      #taskInput {
+        max-width: 100%;
       }
     }
   </style>
 </head>
 <body>
 
-<h1>TODO</h1>
+  <h1>TODO</h1>
 
-<div id="inputArea">
+  <!-- タスク入力 -->
   <input type="text" id="taskInput" placeholder="タスクを入力">
-  <button onclick="addTask()">追加</button>
-</div>
+  <button class="add-btn" onclick="addTask()">追加</button>
 
-<div id="taskList"></div>
+  <!-- タスク一覧 -->
+  <div id="taskList"></div>
 
-<hr>
+  <!-- タイマー -->
+  <div class="timer" id="timerDisplay">00:00</div>
+  <div class="timer-buttons">
+    <button onclick="startTimer(1500)">25分スタート</button>
+    <button onclick="startTimer(300)">5分休憩</button>
+    <button onclick="stopTimer()">ストップ</button>
+  </div>
 
-<div class="timer" id="timerDisplay">00:00</div>
-<div class="timer-buttons">
-  <button onclick="startTimer(1500)">25分スタート</button>
-  <button onclick="startTimer(300)">5分休憩</button>
-  <button onclick="stopTimer()">ストップ</button>
-</div>
+  <script>
+    let tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+    let timer = null;
+    let seconds = 0;
 
-<script>
-  let tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
-  let timer = null;
-  let seconds = 0;
+    function saveTasks() {
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
 
-  function saveTasks() {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-  }
+    function renderTasks() {
+      const taskList = document.getElementById('taskList');
+      taskList.innerHTML = '';
+      tasks.forEach((task, index) => {
+        const div = document.createElement('div');
+        div.className = 'task';
 
-  function renderTasks() {
-    const taskList = document.getElementById('taskList');
-    taskList.innerHTML = '';
-    tasks.forEach((task, index) => {
-      const div = document.createElement('div');
-      div.className = 'task';
+        const leftDiv = document.createElement('div');
+        leftDiv.className = 'task-left';
 
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.checked = task.isDone;
-      checkbox.onchange = () => toggleTask(index);
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.checked = task.isDone;
+        checkbox.onchange = () => toggleTask(index);
 
-      const span = document.createElement('span');
-      span.textContent = task.title;
-      if (task.isDone) span.classList.add('done');
+        const span = document.createElement('span');
+        span.textContent = task.title;
+        if (task.isDone) span.classList.add('done');
 
-      const deleteBtn = document.createElement('button');
-      deleteBtn.textContent = '削除';
-      deleteBtn.className = 'delete-button';
-      deleteBtn.onclick = () => deleteTask(index);
+        leftDiv.appendChild(checkbox);
+        leftDiv.appendChild(span);
 
-      div.appendChild(checkbox);
-      div.appendChild(span);
-      div.appendChild(deleteBtn);
-      taskList.appendChild(div);
-    });
-  }
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'delete-btn';
+        deleteBtn.textContent = '削除';
+        deleteBtn.onclick = () => deleteTask(index);
 
-  function addTask() {
-    const input = document.getElementById('taskInput');
-    const title = input.value.trim();
-    if (title) {
-      tasks.push({ title, isDone: false });
-      input.value = '';
+        div.appendChild(leftDiv);
+        div.appendChild(deleteBtn);
+
+        taskList.appendChild(div);
+      });
+    }
+
+    function addTask() {
+      const input = document.getElementById('taskInput');
+      const title = input.value.trim();
+      if (title) {
+        tasks.push({ title, isDone: false });
+        input.value = '';
+        saveTasks();
+        renderTasks();
+      }
+    }
+
+    function toggleTask(index) {
+      tasks[index].isDone = !tasks[index].isDone;
       saveTasks();
       renderTasks();
     }
-  }
 
-  function toggleTask(index) {
-    tasks[index].isDone = !tasks[index].isDone;
-    saveTasks();
-    renderTasks();
-  }
-
-  function deleteTask(index) {
-    tasks.splice(index, 1);
-    saveTasks();
-    renderTasks();
-  }
-
-  function formatTime(s) {
-    const m = String(Math.floor(s / 60)).padStart(2, '0');
-    const sec = String(s % 60).padStart(2, '0');
-    return `${m}:${sec}`;
-  }
-
-  function updateTimerDisplay() {
-    document.getElementById('timerDisplay').textContent = formatTime(seconds);
-  }
-
-  function startTimer(sec) {
-    clearInterval(timer);
-    seconds = sec;
-    updateTimerDisplay();
-    timer = setInterval(() => {
-      if (seconds > 0) {
-        seconds--;
-        updateTimerDisplay();
-      } else {
-        clearInterval(timer);
-        alert('タイマーが終了しました！');
-      }
-    }, 1000);
-  }
-
-  function stopTimer() {
-    clearInterval(timer);
-  }
-
-  document.getElementById('taskInput').addEventListener('keydown', function(event) {
-    if (event.key === 'Enter') {
-      addTask();
+    function deleteTask(index) {
+      tasks.splice(index, 1);
+      saveTasks();
+      renderTasks();
     }
-  });
 
-  renderTasks();
-</script>
+    function formatTime(s) {
+      const m = String(Math.floor(s / 60)).padStart(2, '0');
+      const sec = String(s % 60).padStart(2, '0');
+      return `${m}:${sec}`;
+    }
+
+    function updateTimerDisplay() {
+      document.getElementById('timerDisplay').textContent = formatTime(seconds);
+    }
+
+    function startTimer(sec) {
+      clearInterval(timer);
+      seconds = sec;
+      updateTimerDisplay();
+      timer = setInterval(() => {
+        if (seconds > 0) {
+          seconds--;
+          updateTimerDisplay();
+        } else {
+          clearInterval(timer);
+          alert('タイマーが終了しました！');
+        }
+      }, 1000);
+    }
+
+    function stopTimer() {
+      clearInterval(timer);
+    }
+
+    // Enterキーでタスク追加
+    document.getElementById('taskInput').addEventListener('keydown', function(event) {
+      if (event.key === 'Enter') {
+        addTask();
+      }
+    });
+
+    renderTasks();
+  </script>
 
 </body>
 </html>
