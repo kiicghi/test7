@@ -6,7 +6,7 @@
   <title>TODO</title>
   <style>
     body {
-      font-family: 'Helvetica Neue', sans-serif;
+      font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
       background: #f9f9f9;
       margin: 40px;
       color: #333;
@@ -19,7 +19,7 @@
     }
 
     #inputArea {
-      margin-bottom: 30px;
+      margin-bottom: 40px;
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
@@ -52,13 +52,16 @@
     .task {
       display: flex;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       font-size: 16px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 8px;
     }
 
     .task input[type="checkbox"] {
       margin-right: 10px;
-      transform: scale(1.2);
+      transform: scale(1.5);
+      accent-color: #4a90e2;
     }
 
     .task span {
@@ -73,9 +76,10 @@
     .delete-button {
       background-color: #ccc;
       color: #333;
-      font-size: 14px;
+      font-size: 13px;
       padding: 6px 10px;
-      border-radius: 8px;
+      border-radius: 6px;
+      margin-left: auto;
     }
 
     .delete-button:hover {
@@ -85,12 +89,18 @@
     .timer {
       font-size: 32px;
       margin-top: 30px;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
       font-weight: bold;
     }
 
+    .timer-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
     hr {
-      margin: 30px 0;
+      margin: 40px 0 30px;
     }
 
     /* スマホ対応 */
@@ -119,15 +129,29 @@
       }
 
       .delete-button {
-        font-size: 16px;
+        font-size: 14px;
+        padding: 5px 8px;
+        width: auto;
       }
 
       .task {
         font-size: 18px;
       }
 
+      .task input[type="checkbox"] {
+        transform: scale(1.5);
+      }
+
       .timer {
         font-size: 28px;
+      }
+
+      .timer-buttons {
+        flex-direction: column;
+      }
+
+      .timer-buttons button {
+        width: 100%;
       }
     }
   </style>
@@ -146,9 +170,11 @@
 <hr>
 
 <div class="timer" id="timerDisplay">00:00</div>
-<button onclick="startTimer(1500)">25分スタート</button>
-<button onclick="startTimer(300)">5分休憩</button>
-<button onclick="stopTimer()">ストップ</button>
+<div class="timer-buttons">
+  <button onclick="startTimer(1500)">25分スタート</button>
+  <button onclick="startTimer(300)">5分休憩</button>
+  <button onclick="stopTimer()">ストップ</button>
+</div>
 
 <script>
   let tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
